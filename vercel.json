@@ -1,1 +1,1 @@
-{ "version": 2, "rewrites": [{ "source": "/(.*)", "destination": "/" }], "outputDirectory": "build" }
+{ "version": 2, "rewrites": [{ "source": "/(.*)", "destination": "/" }], "outputDirectory": "public" }
