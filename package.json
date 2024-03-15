@@ -1,0 +1,46 @@
+{
+  "name": "backend_hammer",
+  "version": "0.0.1",
+  "description": "backend for hammer",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "nodemon index.ts",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/JoseRM82/backend_hammer.git"
+  },
+  "author": "JoseRM82",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JoseRM82/backend_hammer/issues"
+  },
+  "homepage": "https://github.com/JoseRM82/backend_hammer#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "crypto-js": "^4.1.1",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "jsonwebtoken": "^8.5.1",
+    "module-alias": "^2.2.2",
+    "mongoose": "^6.5.2",
+    "path": "^0.12.7",
+    "request-json": "^0.6.5",
+    "response-json": "^1.0.1",
+    "socket.io": "^4.5.1",
+    "socket.io-client": "^4.5.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.12",
+    "@types/crypto-js": "^4.1.1",
+    "@types/express": "^4.17.13",
+    "@types/jsonwebtoken": "^8.5.8",
+    "@types/module-alias": "^2.0.1",
+    "@types/node": "^18.7.6",
+    "@types/socket.io": "^3.0.2",
+    "nodemon": "^2.0.19",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.7.4"
+  }
+}
