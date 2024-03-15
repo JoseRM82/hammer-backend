@@ -1,4 +1,4 @@
-// import { Request, Response } from "express"
+import { Request, Response } from "express"
 import http from 'http'
 
 import dbConnection from "./config/database"
@@ -18,9 +18,9 @@ app.use(express.json())
 app.use(cors())
 registryRoutes(app)
 
-// app.get('/', (req: Request, res: Response) => {
-//   res.send("Now you're connected")
-// })
+app.get('/', (req: Request, res: Response) => {
+  res.send("Now you're connected to vercel")
+})
 
 const server = http.createServer(app)
 // const io = new Server(server)
