@@ -29,6 +29,6 @@ const server = http.createServer(app)
 //   console.log('connection started')
 // })
 
-server.listen(5000, () => {
+server.listen(process.env.PORT, () => {
   console.log('Server on port', process.env.PORT)
 })
