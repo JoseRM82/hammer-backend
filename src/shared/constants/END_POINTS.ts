@@ -34,10 +34,16 @@ const CASE = {
   // GET_DATA: `/${cases}/:id`,
   GET_CURRENT_CLIENT_CASES: `/${cases}/client`,
   GET_CURRENT_LAWYER_CASES: `/${cases}/lawyer`,
+  GET_NEEDED_FILES: `/${cases}/needed-files/:case_id`,
+  UPDATE_NEEDED_FILES: `/${cases}/update-needed-files`,
+  DELETE_NEEDED_FILE: `/${cases}/delete-needed-file`,
+  DOWNLOAD_FILE: `/${cases}/download-file`,
+  UPLOAD_FILE: `/${cases}/upload-file`,
+  DELETE_FILE_S3: `/${cases}/delete-file-s3`,
   GET_PAST_CLIENT_CASES: `/${cases}/past/client`,
   GET_PAST_LAWYER_CASES: `/${cases}/past/lawyer`,
   // UPDATE_DESCRIPTION: `/${cases}/:id`,
-  // FINISH_CASE: `${cases}/:id`
+  // FINISH_CASE: `${cases}/:id`,
 }
 
 const REQUEST = {

@@ -5,12 +5,23 @@ export default interface CaseRepository {
   lawyer_id?: string;
   lawyer_name?: string;
   next_court?: Date;
-  needed_files?: string;
+  needed_files?: NeededFiles;
   data?: Data;
   judgement_location?: JudgmentLocation;
   status?: Status;
   start_date?: Date;
   end_date?: Date;
+}
+
+export interface NeededFiles {
+  files_types: string[]; 
+  files_url: Files_URL[];
+}
+
+export interface Files_URL {
+  name: string;
+  url: string;
+  key: string;
 }
 
 export interface Data {
