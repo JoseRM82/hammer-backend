@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { DeleteObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { DeleteObjectCommand, GetObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { UploadedFile } from "express-fileupload";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -11,6 +11,7 @@ import { network_error, network_success, server_error } from '../middlewares/net
 import { COMMON_ERRORS, ERROR_CODES } from "../shared/constants/ERROR_CODES";
 import { Status } from '../domain/repository/case-repository'
 import { error } from "console";
+import { Client } from "socket.io/dist/client";
 
 export default class CaseController {
   public async create(request: Request, response: Response) {
@@ -199,7 +200,6 @@ export default class CaseController {
       if(userType === 'client') {
         const case_id = request.body.case_id
         const needed_file = request.body.file_name
-        const ext = request.body.ext
         const file_url = request.body.file_url
         const key = request.body.key
 
@@ -298,9 +298,6 @@ export default class CaseController {
       }
 
       if(user_type === 'client') {
-        const case_id = request.body.case_id
-        const needed_file = request.body.file_name
-
         const client = await ClientModel.findOne({token: token})
         const caseToUpdate = await CaseModel.findOne({_id: case_id})
         
@@ -362,6 +359,7 @@ export default class CaseController {
         const file_path = `${file_s3_name}.${ext}`
 
         const command = new PutObjectCommand({
+          'ACL': 'public-read',
           'Body': file_data,
           'Bucket': process.env.BUCKET,
           'Key': file_path,
@@ -441,6 +439,41 @@ export default class CaseController {
 
   public async downloadFile(request: Request, response: Response) {
     try {
+      const key = request.headers.key as string
+      const user_type = request.headers.usertype
+      const token = request.headers.authorization
+      const case_id = request.headers.caseid
+
+      if(user_type !== 'lawyer') return network_error('Wrong user type', 400, response, error, ERROR_CODES.REQUEST_ERRORS.BAD_REQUEST)
+
+      const lawyer = await LawyerModel.findOne({token: token})
+
+      if(!lawyer) return network_error('Lawyer does not exist', 400, response, error, ERROR_CODES.REQUEST_ERRORS.NO_TOKEN_PROVIDED)
+
+      const wantedCase = await CaseModel.findOne({_id: case_id})
+
+      if(!wantedCase) return network_error('Case not found', 400, response, error, ERROR_CODES.REQUEST_ERRORS.NOT_FOUND)
+
+      const s3client = new S3Client({
+        credentials: {
+          accessKeyId: process.env.ACC_KEY!,
+          secretAccessKey: process.env.SEC_KEY!,
+        },
+        region: process.env.LOCATION!,
+      })
+
+      const input = {
+        "Bucket": process.env.BUCKET as string,
+        "Key": key,
+      }
+
+      const command = new GetObjectCommand(input)
+
+      const downloadedFile = await s3client.send(command)
+
+      if(!downloadedFile) return network_error('The file was not found', 500, response, error, ERROR_CODES.REQUEST_ERRORS.BAD_REQUEST)
+
+      return network_success('', 200, response, 'File successfully obtained')
 
     } catch(error) {
       return network_error('There was a service error', 500, response, error, ERROR_CODES.SERVER_ERRORS.INTERNAL_ERROR)

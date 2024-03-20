@@ -10,7 +10,7 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const fileUpload = require('express-fileupload')
-const { Server } = require('socket.io')
+// const { Server } = require('socket.io')
 
 enableEnviroments()
 dbConnection()
@@ -26,7 +26,7 @@ registryRoutes(app)
 // })
 
 const server = http.createServer(app)
-const io = new Server(server) 
+// const io = new Server(server)
 
 // io.on('connection', () => {
 //   console.log('connection started')
