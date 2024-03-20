@@ -221,7 +221,7 @@ export default class CaseController {
         const currentUrl = caseToUpdate.needed_files!.files_url
         const urlToAdd = {name: needed_file, url: file_url, key: key}
 
-        const fileAddedToUrl = await CaseModel.updateOne({_id: case_id}, {$set: {"needed_files.files_url": currentUrl[0].name === '' ? urlToAdd : [...currentUrl, urlToAdd]}})
+        const fileAddedToUrl = await CaseModel.updateOne({_id: case_id}, {$set: {"needed_files.files_url": currentUrl[0].name === '' ? [urlToAdd] : [...currentUrl, urlToAdd]}})
 
         if (!fileAddedToUrl) return network_error("The was a problem saving the file", 500, response, error, ERROR_CODES.SERVER_ERRORS.INTERNAL_ERROR)
 
