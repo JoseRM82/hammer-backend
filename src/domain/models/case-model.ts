@@ -6,13 +6,13 @@ const Case = new Schema<CaseRepository, Model<CaseRepository>>({
   client_name: { type: String },
   lawyer_id: { type: String },
   lawyer_name: { type: String },
-  next_court: { type: Date },
+  next_court: { type: String },
   needed_files: { type: SchemaTypes.Mixed },
   data: { type: SchemaTypes.Mixed },
   judgement_location: { type: Object },
   status: { type: String },
   start_date: { type: Date },
-  end_date: { type: Date },
+  end_date: { type: String },
 })
 
 export default model('Cases', Case)

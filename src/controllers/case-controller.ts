@@ -27,6 +27,7 @@ export default class CaseController {
         const newCase = new CaseModel({
           client_id: client._id,
           client_name: `${client.last_name}, ${client.first_name}`,
+          next_court: '',
           data: caseData,
           needed_files: {
             files_types: [],
@@ -36,8 +37,12 @@ export default class CaseController {
               key: '',
             }],
           },
+          judgement_location: {
+            court_adress: ''
+          },
           status: Status.on_hold,
           start_date: new Date(),
+          end_date: '',
         })
 
         await newCase.save()
