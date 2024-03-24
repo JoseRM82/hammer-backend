@@ -6,19 +6,20 @@ const lawyerController = new LawyerController()
 
 const {
   LAWYER: {
-    CREATE,
-    CREATE_PASSWORD,
+    CREATE_TOKEN,
+    CREATE_USER,
+    VALIDATE_EMAIL,
     GET_ALL,
     GET_DATA,
     UPDATE_LAWYER,
-    CREATE_TOKEN,
   }
 } = USERS_ENDPOINTS
 
 const LawyerRoutes = Router()
 
-LawyerRoutes.post(CREATE, lawyerController.create)
-LawyerRoutes.post(CREATE_PASSWORD, lawyerController.createPassword)
+LawyerRoutes.post(CREATE_TOKEN, lawyerController.createToken)
+LawyerRoutes.post(CREATE_USER, lawyerController.createUser)
+LawyerRoutes.post(VALIDATE_EMAIL, lawyerController.validateEmail)
 LawyerRoutes.get(GET_ALL, lawyerController.getAll)
 LawyerRoutes.get(GET_DATA, lawyerController.getData)
 LawyerRoutes.patch(UPDATE_LAWYER, lawyerController.updateLawyer)

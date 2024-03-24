@@ -10,21 +10,21 @@ const citations = `${API_ENDPOINT}/citations`
 
 const USERS_ENDPOINTS = {
   LAWYER: {
-    CREATE: `/${API_ENDPOINT}/${lawyer}/`,
-    CREATE_PASSWORD: `/${API_ENDPOINT}/${lawyer}/password`,
+    CREATE_TOKEN: `/${API_ENDPOINT}/${lawyer}/create-token`,
+    CREATE_USER: `/${API_ENDPOINT}/${lawyer}/create-user`,
+    VALIDATE_EMAIL: `/${API_ENDPOINT}/${lawyer}/validate-email`,
     GET_ALL: `/${API_ENDPOINT}/${lawyer}/`,
     GET_DATA: `/${API_ENDPOINT}/${lawyer}/:token`,
     UPDATE_LAWYER: `/${API_ENDPOINT}/${lawyer}/update`,
-    CREATE_TOKEN: `/${API_ENDPOINT}/${lawyer}/createToken`,
   },
 
   CLIENT: {
-    CREATE: `/${API_ENDPOINT}/${client}/`,
-    CREATE_PASSWORD: `/${API_ENDPOINT}/${client}/password`,
+    CREATE_TOKEN: `/${API_ENDPOINT}/${client}/create-token`,
+    CREATE_USER: `/${API_ENDPOINT}/${client}/create-user`,
+    VALIDATE_EMAIL: `/${API_ENDPOINT}/${client}/validate-email`,
     GET_ALL: `/${API_ENDPOINT}/${client}/`,
     GET_DATA: `/${API_ENDPOINT}/${client}/:token`,
     UPDATE_CLIENT: `/${API_ENDPOINT}/${client}/update`,
-    CREATE_TOKEN: `/${API_ENDPOINT}/${client}/createToken`,
   }
 }
 

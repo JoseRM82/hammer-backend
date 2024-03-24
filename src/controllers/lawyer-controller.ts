@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { v4 as uuidv4 } from 'uuid';
 
 import LawyerModel from "../domain/models/lawyer-model";
 import { encrypt } from '../shared/utils/crypt'
@@ -6,89 +7,63 @@ import JWTauth from '../middlewares/JWTauth'
 import createJWT from '../shared/utils/createJWT'
 import { network_error, network_success, server_error } from '../middlewares/network-middleware'
 import { ERROR_CODES } from "../shared/constants/ERROR_CODES";
-import { error } from "console";
+import {error} from 'console'
+import lawyerModel from "../domain/models/lawyer-model";
 
 export default class LawyerController {
-  public async create(request: Request, response: Response) {
+  public async createToken(request: Request, response: Response) {
     try {
-      const { first_name, last_name, email } = request.body as RequestBody
+      const { first_name, last_name, email, password } = request.body 
+      const uid = uuidv4()
 
-      type RequestBody = {
-        first_name: string;
-        last_name: string;
-        email: string;
-      }
+      const token = await createJWT(uid, first_name, last_name, email, password)
 
-      const emailExists = await LawyerModel.findOne({ email: email })
-
-      if (emailExists) {
-        return response.send({
-          message: 'Email is already in use',
-          success: false,
-        })
-
-      } else {
-        const lawyer = new LawyerModel({
-          first_name: first_name,
-          last_name: last_name,
-          email: email,
-          user_type: 'lawyer',
-        })
-
-        await lawyer.save()
-
-        const token = await createJWT(lawyer._id, first_name, last_name, email)
-
-        const newLawyer = await LawyerModel.findOneAndUpdate(
-          { _id: lawyer._id },
-          { token: token },
-          { new: true, },
-        )
-
-        console.log('newLawyer: ', newLawyer)
-
-        return network_success(
-          newLawyer,
-          200,
-          response,
-          'Lawyer main info created'
-        )
-      }
+      return network_success(
+        token,
+        200,
+        response,
+        'Lawyer main info created'
+      )
 
     } catch (error) {
       return server_error(500, response, error)
     }
   }
 
-  public async createPassword(request: Request, response: Response) {
+  public async validateEmail(request: Request, response: Response) {
     try {
-      const token = request.headers.authorization
-      const { password } = request.body
-      const lawyer = await LawyerModel.find({ token: token })
-      console.log('email para pass: ', lawyer![0].email)
+      const email = request.body
 
-      if (!lawyer) {
-        return network_error({}, 400, response, '', ERROR_CODES.REQUEST_ERRORS.NOT_FOUND)
+      const userExist = await lawyerModel.find({email: email})
 
-      } else {
-        const encryptedPassword = encrypt(password)
+      if(userExist) return network_error('Lawyer email already exist', 500, response, error, ERROR_CODES.REQUEST_ERRORS.BAD_REQUEST)
 
-        console.log('newPasswordLawyer: ', LawyerModel.findOne({ _id: lawyer[0]._id }))
-        const newPasswordLawyer = await LawyerModel.findOneAndUpdate(
-          { _id: lawyer[0]._id },
-          { password: encryptedPassword },
-          { new: true },
-        )
-        console.log('newPasssssssssss: ', newPasswordLawyer)
-
-        return network_success(newPasswordLawyer, 200, response, 'Password successfully created')
-      }
+      network_success('', 200, response, 'Lawyer email available to use')
 
     } catch (error) {
       return server_error(500, response, error)
     }
   }
 
+  public async createUser(request: Request, response: Response) {
+    try {
+      const userData = request.body
+
+      const lawyer = new LawyerModel(userData)
+
+      const lawyerCreated = await lawyer.save()
+
+      if(!lawyerCreated) return server_error(500, response, '', ERROR_CODES.SERVER_ERRORS.INTERNAL_ERROR)
+
+      const lawyer_id = await lawyerModel.findOne({email: userData.email})
+
+      return network_success(lawyer_id, 200, response, 'Lawyer successfully created')
+
+    } catch(error) {
+      return server_error(500, response, '', ERROR_CODES.SERVER_ERRORS.INTERNAL_ERROR)
+    }
+  }
+ 
   public async getAll(request: Request, response: Response) {
     try {
       const lawyers = await LawyerModel.find()

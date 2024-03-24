@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { v4 as uuidv4 } from "uuid";
 
 import ClientModel from "../domain/models/client-model";
 import { encrypt } from '../shared/utils/crypt'
@@ -8,80 +9,56 @@ import { network_error, network_success, server_error } from '../middlewares/net
 import { COMMON_ERRORS, ERROR_CODES } from "../shared/constants/ERROR_CODES";
 
 export default class ClientController {
-  public async create(request: Request, response: Response) {
+  public async createToken(request: Request, response: Response) {
     try {
-      const { first_name, last_name, email } = request.body as RequestBody
+      const { first_name, last_name, email, password } = request.body 
+      const uid = uuidv4()
 
-      type RequestBody = {
-        first_name: string;
-        last_name: string;
-        email: string;
-      }
+      const token = await createJWT(uid, first_name, last_name, email, password)
 
-      const emailExists = await ClientModel.findOne({ email: email })
-
-      if (emailExists) {
-        return network_error({}, 11000, response, '', COMMON_ERRORS.ALREADY_EXIST)
-
-      } else {
-        const client = new ClientModel({
-          first_name: first_name,
-          last_name: last_name,
-          email: email,
-          user_type: 'client',
-        })
-
-        await client.save()
-
-        const token = await createJWT(client._id, first_name, last_name, email)
-
-        const newClient = await ClientModel.findOneAndUpdate(
-          { _id: client._id },
-          { token: token },
-          { new: true, },
-        )
-
-        return network_success(
-          newClient,
-          200,
-          response,
-          'Client created successfully'
-        )
-      }
+      return network_success(
+        token,
+        200,
+        response,
+        'Client main info created'
+      )
 
     } catch (error) {
       return server_error(500, response, error)
     }
   }
 
-  public async createPassword(request: Request, response: Response) {
+  public async validateEmail(request: Request, response: Response) {
     try {
-      const token = request.headers.authorization
-      const { password } = request.body
-      const client = await ClientModel.find({ token: token })
+      const email = request.body
 
-      if (!client) {
-        return network_error({}, 400, response, '', ERROR_CODES.REQUEST_ERRORS.NOT_FOUND)
+      const userExist = await ClientModel.find({email: email})
 
-      } else {
-        const encryptedPassword = encrypt(password)
+      if(userExist) return network_error('Client email already exist', 500, response, '', COMMON_ERRORS.ALREADY_EXIST)
 
-        const newPasswordClient = await ClientModel.findOneAndUpdate(
-          { token: token },
-          { password: encryptedPassword },
-          { new: true },
-        )
-
-        return network_success(
-          newPasswordClient,
-          200,
-          response,
-          'Client password has been set successfully'
-        )
-      }
+      network_success('', 200, response, 'Client email available to use')
 
     } catch (error) {
-      return server_error(500, response, error)
+      return server_error(500, response, error, ERROR_CODES.SERVER_ERRORS.INTERNAL_ERROR)
+    }
+  }
+
+  public async createUser(request: Request, response: Response) {
+    try {
+      const userData = request.body
+
+      const client = new ClientModel(userData)
+
+      const clientCreated = await client.save()
+
+      if(!clientCreated) return server_error(500, response, '', ERROR_CODES.SERVER_ERRORS.INTERNAL_ERROR)
+
+      const client_id = await ClientModel.findOne({email: userData.email})
+
+      return network_success(client_id, 200, response, 'Lawyer successfully created')
+
+    } catch(error) {
+      return server_error(500, response, '', ERROR_CODES.SERVER_ERRORS.INTERNAL_ERROR)
     }
   }
 

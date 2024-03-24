@@ -6,19 +6,20 @@ const clientController = new ClientController()
 
 const {
   CLIENT: {
-    CREATE,
-    CREATE_PASSWORD,
+    CREATE_TOKEN,
+    CREATE_USER,
+    VALIDATE_EMAIL,
     GET_ALL,
     GET_DATA,
     UPDATE_CLIENT,
-    CREATE_TOKEN,
   }
 } = USERS_ENDPOINTS
 
 const ClientRoutes = Router()
 
-ClientRoutes.post(CREATE, clientController.create)
-ClientRoutes.post(CREATE_PASSWORD, clientController.createPassword)
+ClientRoutes.post(CREATE_TOKEN, clientController.createToken)
+ClientRoutes.post(VALIDATE_EMAIL, clientController.validateEmail)
+ClientRoutes.post(CREATE_USER, clientController.createUser)
 ClientRoutes.get(GET_ALL, clientController.getAll)
 ClientRoutes.get(GET_DATA, clientController.getData)
 ClientRoutes.patch(UPDATE_CLIENT, clientController.updateClient)
