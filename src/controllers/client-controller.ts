@@ -30,15 +30,14 @@ export default class ClientController {
 
   public async validateEmail(request: Request, response: Response) {
     try {
-      const email = request.body
-
-      const userExist = await ClientModel.find({email: email})
-
+      const email = request.body.email
+      const userExist = await ClientModel.findOne({email: email})
+      
       if(userExist) return network_error('Client email already exist', 500, response, '', COMMON_ERRORS.ALREADY_EXIST)
-
-      network_success('', 200, response, 'Client email available to use')
-
-    } catch (error) {
+    
+      return network_success({}, 200, response, 'Client email available to use')
+    
+  } catch (error) {
       return server_error(500, response, error, ERROR_CODES.SERVER_ERRORS.INTERNAL_ERROR)
     }
   }
@@ -53,9 +52,9 @@ export default class ClientController {
 
       if(!clientCreated) return server_error(500, response, '', ERROR_CODES.SERVER_ERRORS.INTERNAL_ERROR)
 
-      const client_id = await ClientModel.findOne({email: userData.email})
+      const newClient = await ClientModel.findOne({email: userData.email})
 
-      return network_success(client_id, 200, response, 'Lawyer successfully created')
+      return network_success(newClient?._id, 200, response, 'Client successfully created')
 
     } catch(error) {
       return server_error(500, response, '', ERROR_CODES.SERVER_ERRORS.INTERNAL_ERROR)

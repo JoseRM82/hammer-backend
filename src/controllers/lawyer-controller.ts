@@ -32,11 +32,11 @@ export default class LawyerController {
 
   public async validateEmail(request: Request, response: Response) {
     try {
-      const email = request.body
+      const {email} = request.body
 
-      const userExist = await lawyerModel.find({email: email})
+      const userExist = await lawyerModel.findOne({email: email})
 
-      if(userExist) return network_error('Lawyer email already exist', 500, response, error, ERROR_CODES.REQUEST_ERRORS.BAD_REQUEST)
+      if(userExist) return network_error(userExist, 500, response, error, ERROR_CODES.REQUEST_ERRORS.BAD_REQUEST)
 
       network_success('', 200, response, 'Lawyer email available to use')
 
