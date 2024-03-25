@@ -57,12 +57,11 @@ export default class CaseController {
 
   public async setLawyer(request: Request, response: Response) {
     try {
-      const token = request.headers.authorization
-      const { request_id } = request.body
+      const { request_id, token } = request.body
       const foundRequest = await RequestModel.findById(request_id)
 
       if (!foundRequest) {
-        return network_error({}, 400, response, '', ERROR_CODES.REQUEST_ERRORS.NOT_FOUND)
+        return network_error({}, 400, response, error, ERROR_CODES.REQUEST_ERRORS.NOT_FOUND)
       }
 
       const lawyer = await LawyerModel.findOne({ token: token })

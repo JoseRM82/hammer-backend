@@ -16,12 +16,13 @@ function decrypt(hash: string): any {
   }
 }
 
-function comparePassword(hash: string, compare: string): boolean {
-  const decrypted = decrypt(hash);
+function comparePassword(dbPass: string, logedPass: string): boolean {
+  const decrypted = decrypt(dbPass);
   console.log({ decrypted });
-  if (compare === String(decrypted)) {
+  console.log({ logedPass });
+  if (logedPass === String(decrypted)) {
     console.log('TRUE!');
-    console.log({ decrypted: String(decrypted), compare });
+    console.log({ decrypted: String(decrypted), logedPass });
     return true;
   }
   return false;

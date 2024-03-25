@@ -6,6 +6,7 @@ import { COMMON_ERRORS, ERROR_CODES, USER_ERRORS } from "../shared/constants/ERR
 
 import USER_TYPES from '../shared/constants/USER-TYPES'
 import { comparePassword } from "../shared/utils/crypt";
+import { error } from "console";
 
 export default class AuthController {
   public async login(request: Request, response: Response) {
@@ -17,13 +18,13 @@ export default class AuthController {
           const client = await ClientModel.findOne({ email: email })
 
           if (!client) {
-            return network_error({}, 400, response, "Client doesn't exist", USER_ERRORS.PASSWORD_ERROR)
+            return network_error({}, 400, response, error, USER_ERRORS.PASSWORD_ERROR)
 
           } else {
             const validatePassword = comparePassword(client.password, password)
 
             if (!validatePassword) {
-              return network_error({}, 400, response, 'Client does not exist', USER_ERRORS.PASSWORD_ERROR)
+              return network_error('Client does not exist', 400, response, error, USER_ERRORS.PASSWORD_ERROR)
 
             } else {
               const logedClient = {token: client.token, name: client.first_name, last_name: client.last_name, _id: client._id}

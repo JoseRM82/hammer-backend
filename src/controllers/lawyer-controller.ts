@@ -48,8 +48,11 @@ export default class LawyerController {
   public async createUser(request: Request, response: Response) {
     try {
       const userData = request.body
+      const encryptedPass = encrypt(userData.password)
 
-      const lawyer = new LawyerModel(userData)
+      const newUserData = {...userData, password: encryptedPass}
+
+      const lawyer = new LawyerModel(newUserData)
 
       const lawyerCreated = await lawyer.save()
 

@@ -45,8 +45,11 @@ export default class ClientController {
   public async createUser(request: Request, response: Response) {
     try {
       const userData = request.body
+      const encryptedPass = encrypt(userData.password)
 
-      const client = new ClientModel(userData)
+      const newUserData = {...userData, password: encryptedPass}
+
+      const client = new ClientModel(newUserData)
 
       const clientCreated = await client.save()
 
