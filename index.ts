@@ -22,7 +22,11 @@ app.use(cors())
 app.use(fileUpload())
 registryRoutes(app)
 const server = http.createServer(app)
-const io = new Server(server)
+const io = new Server(server, {
+  cors: {
+    origin: 'https://hammerfront.vercel.app',
+  }
+})
 
 server.listen(process.env.PORT, () => {
   console.log('Server on port', process.env.PORT)
