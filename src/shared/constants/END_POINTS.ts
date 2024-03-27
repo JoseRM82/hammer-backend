@@ -60,9 +60,9 @@ const AUTH = {
 }
 
 const CHAT = {
-  GET_OR_CREATE_A_CHAT: `/${chats}`,
-  GET_CHATS: `/${chats}`,
-  GET_A_CERTAIN_CHAT: `/${chats}/unique-chat`,
+  CREATE_A_CHAT: `/${chats}`,
+  GET_CHATS: `/${chats}/get-own-chats`,
+  GET_MESSAGES_FROM_A_CHAT: `/${chats}/get-a-chat`,
 }
 
 const MESSAGE = {

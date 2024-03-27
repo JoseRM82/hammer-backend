@@ -75,29 +75,22 @@ export default class MessageController {
 
   public async getChatMessages(request: Request, response: Response) {
     try {
-      const token = request.headers.authorization
-      const chat_id = request.headers.idcodes
-      const userType = request.headers.usertype
+      const chat_id = request.headers.chatid
+      const user_type = request.headers.usertype
 
-      if (userType === 'client') {
-        const client = await ClientModel.findOne({ token: token })
-
-        if (!client) {
-          return network_error({}, 400, response, '', ERROR_CODES.REQUEST_ERRORS.NOT_FOUND)
-        }
+      if (user_type === 'client') {
 
         const messages = await MessageModel.find({ chat_id: chat_id })
+
+        if(!messages) return network_success([], 200, response, 'There are no messages yet')
 
         return network_success(messages, 200, response, 'Messages getted successfully')
 
-      } else if (userType === 'lawyer') {
-        const lawyer = await LawyerModel.findOne({ token: token })
-
-        if (!lawyer) {
-          return network_error({}, 400, response, '', ERROR_CODES.REQUEST_ERRORS.NOT_FOUND)
-        }
+      } else if (user_type === 'lawyer') {
 
         const messages = await MessageModel.find({ chat_id: chat_id })
+
+        if(!messages) return network_success([], 200, response, 'There are no messages yet')
 
         return network_success(messages, 200, response, 'Messages getted successfully')
 

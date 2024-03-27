@@ -5,15 +5,15 @@ import ChatController from "../controllers/chat-controller";
 const chatController = new ChatController()
 
 const {
-  GET_OR_CREATE_A_CHAT,
+  CREATE_A_CHAT,
   GET_CHATS,
-  GET_A_CERTAIN_CHAT,
+  GET_MESSAGES_FROM_A_CHAT,
 } = CHAT
 
 const ChatRoutes = Router()
 
-ChatRoutes.post(GET_OR_CREATE_A_CHAT, chatController.getOrCreateAChat)
+ChatRoutes.post(CREATE_A_CHAT, chatController.createAChat)
 ChatRoutes.get(GET_CHATS, chatController.getChats)
-ChatRoutes.get(GET_A_CERTAIN_CHAT, chatController.getACertainChat)
+ChatRoutes.post(GET_MESSAGES_FROM_A_CHAT, chatController.getMessagesFromAChat)
 
 export default ChatRoutes
