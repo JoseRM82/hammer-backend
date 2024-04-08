@@ -13,6 +13,10 @@ export default class AuthController {
     try {
       const { email, password, userType } = request.body
 
+      console.log('email: ', email)
+      console.log('password: ', password)
+      console.log('user type: ', userType)
+
       try {
         if (userType === USER_TYPES.client) {
           const client = await ClientModel.findOne({ email: email })

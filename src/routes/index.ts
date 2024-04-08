@@ -6,7 +6,7 @@ import RequestRoutes from './request-routes'
 import AuthRoutes from './auth-routes'
 import MessageRoutes from './message-routes'
 import ChatRoutes from './chat-routes'
-import CitationRoutes from './citation-routes'
+import NoteRoutes from './note-routes'
 
 const registryRoutes = (server: Express) => {
   server.use(ClientRoutes)
@@ -16,7 +16,7 @@ const registryRoutes = (server: Express) => {
   server.use(AuthRoutes)
   server.use(MessageRoutes)
   server.use(ChatRoutes)
-  server.use(CitationRoutes)
+  server.use(NoteRoutes)
   return;
 }
 

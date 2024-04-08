@@ -6,7 +6,7 @@ const cases = `${API_ENDPOINT}/cases`
 const requests = `${API_ENDPOINT}/requests`
 const chats = `${API_ENDPOINT}/chats`
 const messages = `${API_ENDPOINT}/messages`
-const citations = `${API_ENDPOINT}/citations`
+const notes = `${API_ENDPOINT}/notes`
 
 const USERS_ENDPOINTS = {
   LAWYER: {
@@ -71,14 +71,10 @@ const MESSAGE = {
   SET_READED_MESSAGES: `/${messages}/read`,
 }
 
-const CITATION = {
-  CREATE: `/${citations}`,
-  GET_CITATION: `/${citations}`,
-  UPDATE_CITATION: `/${citations}/update`,
-  DELETE_CITATION: `/${citations}/delete`,
-  GET_CASE_CITATIONS: `/${citations}/case`,
-  GET_MONTH_CITATIONS: `/${citations}/month`,
-  GET_DATE_CITATIONS: `/${citations}/date`,
+const NOTE = {
+  CREATE: `/${notes}`,
+  GET_NOTES: `/${notes}/:user_id`,
+  DELETE_NOTE: `/${notes}/delete`,
 }
 
-export { USERS_ENDPOINTS, CASE, AUTH, REQUEST, MESSAGE, CHAT, CITATION }
+export { USERS_ENDPOINTS, CASE, AUTH, REQUEST, MESSAGE, CHAT, NOTE }

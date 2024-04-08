@@ -13,6 +13,7 @@ export const createMessageSocket = (socket: Socket, io: Server) => {
 
         if(socketItem.id === ConnectedUsers.getSocketIdByUserId(data.other_person_id)) {
           socketItem.emit('sentMessage', {content: data.message, user_id: data.user_id})
+          console.log('here')
         }
       })
     }

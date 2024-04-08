@@ -4,13 +4,18 @@ export default interface CaseRepository {
   client_name?: string;
   lawyer_id?: string;
   lawyer_name?: string;
-  next_court?: Date;
+  next_court?: NextCourt[];
   needed_files?: NeededFiles;
   data?: Data;
   judgement_location?: JudgmentLocation;
   status?: Status;
   start_date?: Date;
   end_date?: Date;
+}
+
+export interface NextCourt {
+  citation: string;
+  date: string;
 }
 
 export interface NeededFiles {

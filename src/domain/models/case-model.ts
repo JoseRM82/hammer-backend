@@ -6,7 +6,7 @@ const Case = new Schema<CaseRepository, Model<CaseRepository>>({
   client_name: { type: String },
   lawyer_id: { type: String },
   lawyer_name: { type: String },
-  next_court: { type: String },
+  next_court: { type: SchemaTypes.Mixed },
   needed_files: { type: SchemaTypes.Mixed },
   data: { type: SchemaTypes.Mixed },
   judgement_location: { type: Object },

@@ -11,7 +11,6 @@ import { network_error, network_success, server_error } from '../middlewares/net
 import { COMMON_ERRORS, ERROR_CODES } from "../shared/constants/ERROR_CODES";
 import { Status } from '../domain/repository/case-repository'
 import { error } from "console";
-import { Client } from "socket.io/dist/client";
 
 export default class CaseController {
   public async create(request: Request, response: Response) {
@@ -27,7 +26,10 @@ export default class CaseController {
         const newCase = new CaseModel({
           client_id: client._id,
           client_name: `${client.last_name}, ${client.first_name}`,
-          next_court: '',
+          next_court: [{
+            citation: '',
+            date: '',
+          }],
           data: caseData,
           needed_files: {
             files_types: [],
