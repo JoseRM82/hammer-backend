@@ -12,7 +12,7 @@ export const createAChat = async(data: Record<string, any>) => {
 
       if (!client || !lawyer) return {success: false, data: {chatId: ''}}
 
-      const chat = await ChatModel.findOne({ client_id: client._id, lawyer_id: otherPersonId })
+      const chat = await ChatModel.findOne({ client_id: user_id, lawyer_id: otherPersonId })
 
       if (!chat) {
         const newChat = new ChatModel({
@@ -64,13 +64,13 @@ export const createAChat = async(data: Record<string, any>) => {
         return {success: false, data: {chatId: ''}}
       }
 
-      const chat = await ChatModel.findOne({ client_id: otherPersonId, lawyer_id: lawyer._id })
+      const chat = await ChatModel.findOne({ client_id: otherPersonId, lawyer_id: user_id })
 
       if (!chat) {
         const newChat = new ChatModel({
-          client_id: user_id,
+          client_id: otherPersonId,
           client_name: `${client.last_name}, ${client.first_name}`,
-          lawyer_id: otherPersonId,
+          lawyer_id: user_id,
           lawyer_name: `${lawyer.last_name}, ${lawyer.first_name}`,
           messages: [{
             content: message,
@@ -85,9 +85,9 @@ export const createAChat = async(data: Record<string, any>) => {
           success: true, 
           data: {
             chatId: Chat_Id, 
-            client_id: user_id, 
+            client_id: otherPersonId, 
             client_name: `${client.last_name}, ${client.first_name}`,
-            lawyer_id: otherPersonId,
+            lawyer_id: user_id,
             lawyer_name: `${lawyer.last_name}, ${lawyer.first_name}`,
             messages: [...chatCreated.messages]
           }
@@ -100,9 +100,9 @@ export const createAChat = async(data: Record<string, any>) => {
         success: true, 
         data: {
           chatId: chat._id, 
-          client_id: user_id, 
+          client_id: otherPersonId, 
           client_name: `${client.last_name}, ${client.first_name}`,
-          lawyer_id: otherPersonId,
+          lawyer_id: user_id,
           lawyer_name: `${lawyer.last_name}, ${lawyer.first_name}`,
           messages: [...chat.messages]
         }

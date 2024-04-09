@@ -532,23 +532,21 @@ export default class CaseController {
   }
 
   public async finishCase(request: Request, response: Response) {
-    // try {
-    //   const { id } = request.params
-    //   const foundCase = await CaseModel.findById(id)
+    try {
+      const { case_id } = request.body
+      const foundCase = await CaseModel.findOne({_id: case_id})
 
-    //   if (!foundCase) {
-    //     return network_error({}, 400, response, 'Case not found', ERROR_CODES.REQUEST_ERRORS.NOT_FOUND)
+      if (!foundCase) return network_error({}, 400, response, error, ERROR_CODES.REQUEST_ERRORS.NOT_FOUND)
 
-    //   } else {
-    //     await foundCase.updateOne({
-    //       status: 'finished',
-    //     })
+      const caseFinished = await foundCase.updateOne({
+        status: 'finished',
+      })
 
-    //     return network_success(foundCase, 200, response, 'Case found successfully')
-    //   }
+      return network_success(caseFinished, 200, response, 'Case finished')
+      
 
-    // } catch (error) {
-    //   return server_error(500, response, error)
-    // }
+    } catch (error) {
+      return server_error(500, response, error)
+    }
   }
 }

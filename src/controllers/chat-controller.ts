@@ -19,7 +19,7 @@ export default class ChatController {
 
         if (!client || !lawyer) return network_error({}, 400, response, 'Invalid user type', COMMON_ERRORS.NO_USER_TYPE)
 
-        const chat = await ChatModel.findOne({ client_id: client._id, lawyer_id: otherPersonId })
+        const chat = await ChatModel.findOne({ client_id: user_id, lawyer_id: otherPersonId })
 
         if (!chat) {
           const newChat = new ChatModel({
@@ -32,7 +32,7 @@ export default class ChatController {
               user_id: user_id,
             }]
           })
-
+          
           const chatCreated = await newChat.save()
           const Chat_Id = chatCreated._id
 
@@ -50,20 +50,20 @@ export default class ChatController {
           return network_error({}, 400, response, '', ERROR_CODES.REQUEST_ERRORS.NOT_FOUND)
         }
 
-        const chat = await ChatModel.findOne({ client_id: otherPersonId, lawyer_id: lawyer._id })
-
+        const chat = await ChatModel.findOne({ client_id: otherPersonId, lawyer_id: user_id })
+        
         if (!chat) {
           const newChat = new ChatModel({
-            client_id: user_id,
+            client_id: otherPersonId,
             client_name: `${client.last_name}, ${client.first_name}`,
-            lawyer_id: otherPersonId,
+            lawyer_id: user_id,
             lawyer_name: `${lawyer.last_name}, ${lawyer.first_name}`,
             messages: [{
               content: message,
               user_id: user_id,
             }]
           })
-
+          
           const chatCreated = await newChat.save()
           const Chat_Id = chatCreated._id
 

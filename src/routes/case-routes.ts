@@ -19,7 +19,7 @@ const {
   DELETE_FILE_S3,
   DOWNLOAD_FILE,
   // UPDATE_DESCRIPTION,
-  // FINISH_CASE,
+  FINISH_CASE,
 } = CASE
 
 const CaseRoutes = Router()
@@ -38,6 +38,6 @@ CaseRoutes.post(UPLOAD_FILE, caseController.uploadFile)
 CaseRoutes.get(GET_PAST_CLIENT_CASES, caseController.getPastClientCases)
 CaseRoutes.get(GET_PAST_LAWYER_CASES, caseController.getPastLawyerCases)
 // CaseRoutes.patch(UPDATE_DESCRIPTION, caseController.updateDescription)
-// CaseRoutes.patch(FINISH_CASE, caseController.finishCase)
+CaseRoutes.post(FINISH_CASE, caseController.finishCase)
 
 export default CaseRoutes

@@ -43,7 +43,7 @@ const CASE = {
   GET_PAST_CLIENT_CASES: `/${cases}/past/client`,
   GET_PAST_LAWYER_CASES: `/${cases}/past/lawyer`,
   // UPDATE_DESCRIPTION: `/${cases}/:id`,
-  // FINISH_CASE: `${cases}/:id`,
+  FINISH_CASE: `${cases}/finish-case`,
 }
 
 const REQUEST = {
