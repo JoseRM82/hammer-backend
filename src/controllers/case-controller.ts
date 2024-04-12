@@ -12,6 +12,16 @@ import { COMMON_ERRORS, ERROR_CODES } from "../shared/constants/ERROR_CODES";
 import { Status } from '../domain/repository/case-repository'
 import { error } from "console";
 
+// function authenticationVerifier(req, res, next) {
+//   const token = request.headers.authorization;
+
+//   if(!token) res.error(301);
+
+//   const decodedData = JSON.parse(token);
+
+//   req.userId = decodedData.userId;
+//   next();
+// }
 export default class CaseController {
   public async create(request: Request, response: Response) {
     try {

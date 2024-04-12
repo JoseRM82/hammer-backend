@@ -15,4 +15,8 @@ const Case = new Schema<CaseRepository, Model<CaseRepository>>({
   end_date: { type: String },
 })
 
-export default model('Cases', Case)
+const CaseModel = model('Cases', Case);
+
+export type ICaseModel = typeof CaseModel;
+
+export default CaseModel;
