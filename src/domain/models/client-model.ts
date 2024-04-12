@@ -10,4 +10,6 @@ const Client = new Schema<ClientRepository, Model<ClientRepository>>({
   token: { type: String },
 })
 
-export default model('Clients', Client)
+const ClientModel =  model('Clients', Client)
+export type IClientModel = typeof ClientModel;
+export default ClientModel;

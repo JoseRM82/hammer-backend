@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { CASE } from '../shared/constants/END_POINTS'
 import CaseController from "../controllers/case-controller";
+import { createCaseService } from "../controller/cases/create-case";
 
 const caseController = new CaseController()
 
@@ -24,7 +25,7 @@ const {
 
 const CaseRoutes = Router()
 
-CaseRoutes.post(CREATE, caseController.create)
+CaseRoutes.post(CREATE, createCaseService)
 CaseRoutes.post(SET_LAWYER, caseController.setLawyer)
 // CaseRoutes.get(GET_DATA, caseController.getCase)
 CaseRoutes.get(GET_CURRENT_CLIENT_CASES, caseController.getCurrentClientCases)
